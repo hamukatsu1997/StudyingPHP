@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ログイン</title>
+
+    <link rel="stylesheet" href="../../CSS/Login/login.css">
+</head>
+
+<body>
+
+    <main class="login-container">
+
+        <div class="login-box">
+
+            <h1>Login</h1>
+            <p class="subtitle">ログインしてください</p>
+
+            <form  action="../../PHP/Login/login.php" method="post" id="loginForm">
+
+                <div class="input-group">
+                    <label for="userId">ユーザーID</label>
+                    <input
+                        type="text"
+                        id="userId"
+                        name="userId"
+                        placeholder="ユーザーIDを入力"
+                        autocomplete="username"
+                    >
+                </div>
+
+                <div class="input-group">
+                    <label for="password">パスワード</label>
+
+                    <div class="password-box">
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="パスワードを入力"
+                            autocomplete="current-password"
+                        >
+
+                        <button
+                            type="button"
+                            id="togglePassword"
+                        >
+                            表示
+                        </button>
+                    </div>
+                </div>
+
+                <p id="errorMessage" class="error-message"></p>
+
+                <button type="submit" class="login-button">
+                    ログイン
+                </button>
+
+            </form>
+
+        </div>
+
+    </main>
+
+    <script src="../../JS/Login/login.js"></script>
+
+</body>
+</html>

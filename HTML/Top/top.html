@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>Top Menu</title>
+
+<link rel="stylesheet" href="../../CSS/Top/top.css">
+
+
+</head>
+
+<body>
+
+<span class="user-name" id="userName"></span>
+
+<!-- ヘッダー -->
+<header class="header">
+
+    <div class="logo">
+        My System
+    </div>
+
+    <div class="header-right">
+
+        <span class="user-name">
+            admin
+        </span>
+
+        <button
+            class="logout-button"
+            onclick="logout()"
+        >
+            ログアウト
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- メイン -->
+<main class="main">
+
+    <div class="welcome">
+        <h1>Top Menu</h1>
+
+        <p>
+            ようこそ、<span id="welcomeName"></span>さん
+        </p>
+    </div>
+
+
+    <!-- メニュー -->
+    <div class="menu-grid">
+
+        <div
+            class="menu-card"
+            onclick="openMenu('ユーザー管理')"
+        >
+            <div class="menu-icon">
+                👤
+            </div>
+
+            <h2>ユーザー管理</h2>
+
+            <p>
+                ユーザー情報の確認・編集を行います。
+            </p>
+        </div>
+
+
+        <div
+            class="menu-card"
+            onclick="openMenu('データ管理')"
+        >
+            <div class="menu-icon">
+                📊
+            </div>
+
+            <h2>データ管理</h2>
+
+            <p>
+                システム内のデータを管理します。
+            </p>
+        </div>
+
+
+        <div
+            class="menu-card"
+            onclick="openMenu('お知らせ')"
+        >
+            <div class="menu-icon">
+                📢
+            </div>
+
+            <h2>お知らせ</h2>
+
+            <p>
+                最新のお知らせを確認します。
+            </p>
+        </div>
+
+
+        <div
+            class="menu-card"
+            onclick="openMenu('設定')"
+        >
+            <div class="menu-icon">
+                ⚙️
+            </div>
+
+            <h2>設定</h2>
+
+            <p>
+                システムの設定を変更します。
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- 最近の情報 -->
+    <section class="info-section">
+
+        <h2>お知らせ</h2>
+
+        <div class="notice">
+            <span class="notice-date">
+                2026/09/01
+            </span>
+
+            <span>
+                システムを更新しました。
+            </span>
+        </div>
+
+        <div class="notice">
+            <span class="notice-date">
+                2026/08/25
+            </span>
+
+            <span>
+                新しい機能を追加しました。
+            </span>
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- フッター -->
+<footer class="footer">
+
+    <p>
+        © 2026 My System
+    </p>
+
+</footer>
+
+
+<script>
+
+    function openMenu(menuName) {
+
+        alert(
+            menuName + "を開きます。"
+        );
+
+    }
+
+
+    function logout() {
+
+        const result = confirm(
+            "ログアウトしますか？"
+        );
+
+        if (result) {
+
+            window.location.href =
+                "index.html";
+
+        }
+
+    }
+
+</script>
+<script src="../../JS/Top/top.js"></script>
+
+</body>
+</html>

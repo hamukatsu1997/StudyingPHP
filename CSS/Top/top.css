@@ -1,0 +1,263 @@
+/* =========================
+Top Menu
+========================= */
+
+.header {
+width: 100%;
+height: 65px;
+
+
+padding: 0 30px;
+
+background: #ffffff;
+
+display: flex;
+align-items: center;
+justify-content: space-between;
+
+border-bottom: 1px solid #ddd;
+
+box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.05);
+
+
+}
+
+.logo {
+font-size: 22px;
+
+
+font-weight: bold;
+
+
+}
+
+.header-right {
+display: flex;
+
+
+align-items: center;
+
+gap: 20px;
+
+
+}
+
+.user-name {
+font-size: 14px;
+
+
+color: #555;
+
+
+}
+
+.logout-button {
+padding: 8px 15px;
+
+
+border: 1px solid #ccc;
+
+border-radius: 6px;
+
+background: #fff;
+
+cursor: pointer;
+
+
+}
+
+.logout-button:hover {
+background: #f2f2f2;
+}
+
+/* メイン */
+
+.main {
+width: 100%;
+
+
+max-width: 1000px;
+
+margin: 0 auto;
+
+padding: 50px 20px;
+
+
+}
+
+.welcome {
+margin-bottom: 35px;
+}
+
+.welcome h1 {
+text-align: left;
+
+
+font-size: 30px;
+
+margin-bottom: 8px;
+
+
+}
+
+.welcome p {
+color: #777;
+}
+
+/* メニュー */
+
+.menu-grid {
+display: grid;
+
+
+grid-template-columns:
+    repeat(2, 1fr);
+
+gap: 20px;
+
+
+}
+
+.menu-card {
+padding: 30px;
+
+
+background: #fff;
+
+border-radius: 10px;
+
+border: 1px solid #e5e5e5;
+
+cursor: pointer;
+
+transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+
+
+}
+
+.menu-card:hover {
+transform: translateY(-3px);
+
+
+box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.08);
+
+
+}
+
+.menu-icon {
+font-size: 35px;
+
+
+margin-bottom: 15px;
+
+
+}
+
+.menu-card h2 {
+font-size: 20px;
+
+
+margin-bottom: 8px;
+
+
+}
+
+.menu-card p {
+color: #777;
+
+
+font-size: 14px;
+
+line-height: 1.6;
+
+
+}
+
+/* お知らせ */
+
+.info-section {
+margin-top: 40px;
+
+
+background: #fff;
+
+padding: 25px;
+
+border-radius: 10px;
+
+border: 1px solid #e5e5e5;
+
+
+}
+
+.info-section h2 {
+font-size: 20px;
+
+
+margin-bottom: 15px;
+
+
+}
+
+.notice {
+padding: 15px 0;
+
+
+border-bottom: 1px solid #eee;
+
+display: flex;
+
+gap: 25px;
+
+
+}
+
+.notice:last-child {
+border-bottom: none;
+}
+
+.notice-date {
+color: #888;
+
+
+font-size: 14px;
+
+
+}
+
+/* フッター */
+
+.footer {
+text-align: center;
+
+
+padding: 25px;
+
+color: #999;
+
+font-size: 13px;
+
+}
+
+/* スマホ */
+
+@media (max-width: 600px) {
+
+.header {
+    padding: 0 15px;
+}
+
+.menu-grid {
+    grid-template-columns: 1fr;
+}
+
+.user-name {
+    display: none;
+}
+
+
+}

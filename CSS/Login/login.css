@@ -1,0 +1,156 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family:
+        "Segoe UI",
+        "Noto Sans JP",
+        sans-serif;
+
+    background: #f2f4f7;
+
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 420px;
+    padding: 20px;
+}
+
+.login-box {
+    background: #ffffff;
+
+    padding: 40px;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+h1 {
+    text-align: center;
+
+    font-size: 32px;
+
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    text-align: center;
+
+    color: #777;
+
+    margin-bottom: 32px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    margin-bottom: 8px;
+}
+
+.input-group input {
+    width: 100%;
+
+    height: 45px;
+
+    padding: 0 12px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 6px;
+
+    font-size: 15px;
+
+    outline: none;
+
+    transition: 0.2s;
+}
+
+.input-group input:focus {
+    border-color: #4a90e2;
+
+    box-shadow:
+        0 0 0 3px rgba(74, 144, 226, 0.15);
+}
+
+.password-box {
+    display: flex;
+
+    gap: 8px;
+}
+
+.password-box input {
+    flex: 1;
+}
+
+.password-box button {
+    width: 60px;
+
+    border: 1px solid #ccc;
+
+    background: #f7f7f7;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+}
+
+.password-box button:hover {
+    background: #eaeaea;
+}
+
+.login-button {
+    width: 100%;
+
+    height: 48px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background: #4a90e2;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.login-button:hover {
+    background: #357abd;
+}
+
+.error-message {
+    min-height: 20px;
+
+    margin-bottom: 10px;
+
+    color: #e53935;
+
+    font-size: 14px;
+
+    text-align: center;
+}
