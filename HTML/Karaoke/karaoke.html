@@ -219,7 +219,7 @@ function deleteSong(button) {
 }
 </script>
 
-    <nav class="pagination">
+    <section class="pagination">
         <?php if ($page > 1): ?>
             <a
                 class="button secondary"
@@ -274,8 +274,9 @@ function deleteSong(button) {
         <?php else: ?>
             <span class="button disabled">次のページ</span>
         <?php endif; ?>
-    </nav>
-</div>
+    </section>
+
+    <p>
     <section class="panel">
         <h2>曲を追加</h2>
 
@@ -333,6 +334,8 @@ function deleteSong(button) {
             </button>
         </form>
     </section>
+    </p>
+</div>
 
 </body>
 </html>

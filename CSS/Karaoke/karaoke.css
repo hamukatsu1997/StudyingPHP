@@ -108,6 +108,23 @@ select:focus {
     white-space: nowrap;
 }
 
+.add-form {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr) auto;
+    gap: 16px;
+    align-items: end;
+}
+
+.filter-form {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    align-items: end;
+}
+
+.add-form > .button {
+    justify-self: end;
+}
 .primary {
     background: #2563eb;
     color: #fff;

@@ -176,31 +176,37 @@ if ($action === 'delete') {
         }
     }
 
-    if ($action === 'save') {
-        $postedSongs = $_POST['songs'] ?? [];
-        $songsToSave = [];
+if ($action === 'save') {
 
-        foreach ($postedSongs as $song) {
-            if (!is_array($song)) {
-                continue;
-            }
+    $postedSongs = $_POST['songs'] ?? [];
 
-            $songsToSave[] = [
+    // 現在表示しているページの曲だけを更新する
+    foreach ($postedSongs as $index => $song) {
+
+        if (!is_array($song)) {
+            continue;
+        }
+
+        $index = (int)$index;
+
+        // 元の全曲データに存在する場合だけ更新
+        if (isset($songs[$index])) {
+
+            $songs[$index] = [
                 'title'  => trim((string)($song['title'] ?? '')),
                 'artist' => trim((string)($song['artist'] ?? '')),
                 'year'   => trim((string)($song['year'] ?? '')),
                 'genre'  => trim((string)($song['genre'] ?? '')),
             ];
         }
-
-        if (saveSongs($csvFile, $songsToSave)) {
-            $songs = $songsToSave;
-            $message = '一覧表の内容でCSVを上書き保存しました。';
-        } else {
-            $error = 'CSVの保存に失敗しました。';
-        }
     }
-}
+
+    if (saveSongs($csvFile, $songs)) {
+        $message = '一覧表の内容をCSVに保存しました。';
+    } else {
+        $error = 'CSVの保存に失敗しました。';
+    }
+}}
 
 /*
 |--------------------------------------------------------------------------
