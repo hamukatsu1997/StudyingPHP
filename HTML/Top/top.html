@@ -57,21 +57,20 @@
     <!-- メニュー -->
     <div class="menu-grid">
 
-        <div
-            class="menu-card"
-            onclick="openMenu('ユーザー管理')"
-        >
-            <div class="menu-icon">
-                👤
-            </div>
+<a
+    href="../../PHP/Karaoke/karaoke.php"
+    class="menu-card"
+>
+    <div class="menu-icon">
+        🎤
+    </div>
 
-            <h2>ユーザー管理</h2>
+    <h2>カラオケ</h2>
 
-            <p>
-                ユーザー情報の確認・編集を行います。
-            </p>
-        </div>
-
+    <p>
+        カラオケセットリスト一覧
+    </p>
+</a>
 
         <div
             class="menu-card"
@@ -174,20 +173,14 @@
     }
 
 
-    function logout() {
+function logout() {
+    const result = confirm("ログアウトしますか？");
 
-        const result = confirm(
-            "ログアウトしますか？"
-        );
-
-        if (result) {
-
-            window.location.href =
-                "index.html";
-
-        }
-
+    if (result) {
+        window.location.href =
+            "../../PHP/Top/logout.php";
     }
+}
 
 </script>
 <script src="../../JS/Top/top.js"></script>
