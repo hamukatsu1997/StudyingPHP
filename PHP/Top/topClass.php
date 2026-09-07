@@ -1,6 +1,30 @@
 <?php
 class Top
 {
+
+public function displayTop(): void
+{
+    if (!isset($_SESSION['userId'])) {
+        header('Location: ' . BASE_URI_USER . '/');
+        exit;
+    }
+
+    $this->userId = $_SESSION['userId'];
+    $this->userName = $_SESSION['userName'] ?? '';
+
+    $file = __DIR__ . '/../../HTML/Top/top.html';
+
+    if (!file_exists($file)) {
+        http_response_code(500);
+        exit('Top画面が見つかりません: ' . $file);
+    }
+
+    include $file;
+    exit;
+}
+
+
+
 public function displayKaraoke()
 {
     if (!isset($_SESSION['userId'])) {
@@ -16,6 +40,28 @@ public function displayKaraoke()
         if (!file_exists($file)) {
             http_response_code(500);
             exit('カラオケ画面が見つかりません: ' . $file);
+        }
+
+        include $file;
+        exit;
+}
+
+
+public function displayBoard()
+{
+    if (!isset($_SESSION['userId'])) {
+        header('Location: ' . BASE_URI_USER . '/');
+        exit;
+    }
+
+    $this->userId = $_SESSION['userId'];
+    $this->userName = $_SESSION['userName'];
+
+    $file = __DIR__ . '/../../HTML/Board/board.html';
+
+        if (!file_exists($file)) {
+            http_response_code(500);
+            exit('掲示板画面が見つかりません: ' . $file);
         }
 
         include $file;

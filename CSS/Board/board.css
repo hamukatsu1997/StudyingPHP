@@ -1,0 +1,166 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #f6f8fb;
+    color: #222;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+}
+
+.board-container {
+    width: min(900px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 40px 0 60px;
+}
+
+.board-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+h1,
+h2,
+p {
+    margin-top: 0;
+}
+
+h1 {
+    margin-bottom: 8px;
+    font-size: 30px;
+}
+
+h2 {
+    margin-bottom: 18px;
+    font-size: 21px;
+}
+
+.board-header p {
+    color: #667085;
+}
+
+.back-link {
+    color: #2563eb;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+.post-form-section,
+.post-list-section {
+    padding: 25px;
+    margin-bottom: 22px;
+    background: #fff;
+    border: 1px solid #e4e7ec;
+    border-radius: 10px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+textarea {
+    display: block;
+    width: 100%;
+    min-height: 130px;
+    padding: 12px;
+    border: 1px solid #cfd5df;
+    border-radius: 6px;
+    resize: vertical;
+    font: inherit;
+}
+
+textarea:focus {
+    outline: 2px solid #bfdbfe;
+    border-color: #2563eb;
+}
+
+button {
+    margin-top: 14px;
+    padding: 10px 22px;
+    border: 0;
+    border-radius: 6px;
+    background: #2563eb;
+    color: #fff;
+    font: inherit;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+.error-message {
+    padding: 10px 12px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    background: #fef2f2;
+    color: #b42318;
+}
+
+.post-card {
+    padding: 17px 0;
+    border-top: 1px solid #eaecf0;
+}
+
+.post-card:first-child {
+    padding-top: 0;
+    border-top: 0;
+}
+
+.post-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 9px;
+}
+
+.post-meta time {
+    color: #667085;
+    font-size: 13px;
+}
+
+.post-body {
+    margin-bottom: 0;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+.empty-message {
+    color: #667085;
+}
+
+@media (max-width: 600px) {
+    .board-container {
+        width: min(100% - 24px, 900px);
+        padding-top: 25px;
+    }
+
+    .board-header {
+        display: block;
+    }
+
+    .back-link {
+        display: inline-block;
+        margin-top: 5px;
+    }
+
+    .post-form-section,
+    .post-list-section {
+        padding: 18px;
+    }
+}
