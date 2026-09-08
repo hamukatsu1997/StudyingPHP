@@ -183,14 +183,19 @@ textarea:focus {
     border-color: #2563eb;
 }
 
+.post-form-section form{
+    display: flex;
+    flex-direction: column;
+}
 .post-form-section form button {
+    align-self: flex-end;
     margin-top: 14px;
     padding: 10px 22px;
     border: 0;
     border-radius: 6px;
     background: #2563eb;
-    color: #fff;
-    font: inherit;
+    color:#fff;
+    font :inherit;
     cursor: pointer;
 }
 
