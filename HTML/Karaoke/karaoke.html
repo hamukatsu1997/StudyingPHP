@@ -6,76 +6,35 @@
     <title>楽曲管理</title>
     <link rel="stylesheet" href="../../CSS/Karaoke/karaoke.css">
 </head>
-<script src="../../JS/Karaoke/karaoke.js"></script>
-
-<script>
-(() => {
-    const hamburger = document.getElementById('hamburger');
-    const mobileMenu = document.getElementById('mobile-menu');
-
-    if (!hamburger || !mobileMenu) {
-        return;
-    }
-
-    hamburger.addEventListener('click', () => {
-        const isOpen = hamburger.classList.toggle('is-open');
-
-        mobileMenu.classList.toggle('is-open', isOpen);
-        hamburger.setAttribute('aria-expanded', String(isOpen));
-        hamburger.setAttribute(
-            'aria-label',
-            isOpen ? 'メニューを閉じる' : 'メニューを開く'
-        );
-    });
-
-    mobileMenu.querySelectorAll('a').forEach((link) => {
-        link.addEventListener('click', () => {
-            hamburger.classList.remove('is-open');
-            mobileMenu.classList.remove('is-open');
-            hamburger.setAttribute('aria-expanded', 'false');
-            hamburger.setAttribute('aria-label', 'メニューを開く');
-        });
-    });
-})();
-</script>
-
-</body>
-
-
 <body>
 <header class="header">
-
     <div class="logo">
         <a href="../../HTML/Top/top.html">StudyingPHP</a>
     </div>
 
-<button
-    type="button"
-    id="hamburger"
-    aria-label="メニューを開く"
-    aria-controls="mobile-menu"
-    aria-expanded="false"
->
-    <span></span>
-    <span></span>
-    <span></span>
-</button>
+    <button
+        type="button"
+        id="hamburger"
+        aria-label="メニューを開く"
+        aria-controls="mobile-menu"
+        aria-expanded="false"
+    >
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
 
-<nav id="mobile-menu" class="sm">
-    <ul>
-        <li>
-            <a href="../../HTML/Top/top.html">トップ</a>
-        </li>
-        <li>
-            <a href="../../PHP/Karaoke/karaoke.php">カラオケ</a>
-        </li>
-    </ul>
-</nav>
-
-
+    <nav id="mobile-menu" class="sm" aria-label="メインメニュー">
+        <ul>
+            <li><a href="../../HTML/Top/top.html">トップ</a></li>
+            <li><a href="../../PHP/Karaoke/karaoke.php">カラオケ</a></li>
+            <li><a href="../../PHP/Board/board.php">掲示板</a></li>
+            <li><a href="../../PHP/Downloads/downloads.php">素材一覧</a></li>
+        </ul>
+    </nav>
 </header>
 
-    <div class="container">
+<div class="container">
     <h1>楽曲管理</h1>
 
     <?php if ($message !== ''): ?>
@@ -90,211 +49,100 @@
         </div>
     <?php endif; ?>
 
-
     <section class="panel">
         <h2>絞り込み</h2>
-
         <form method="get" class="filter-form">
             <div class="form-group">
                 <label for="filter-title">曲名</label>
-                <input
-                    type="text"
-                    id="filter-title"
-                    name="title"
-                    value="<?= h($filters['title']) ?>"
-                >
+                <input type="text" id="filter-title" name="title" value="<?= h($filters['title']) ?>">
             </div>
-
             <div class="form-group">
                 <label for="filter-artist">アーティスト名</label>
-                <input
-                    type="text"
-                    id="filter-artist"
-                    name="artist"
-                    value="<?= h($filters['artist']) ?>"
-                >
+                <input type="text" id="filter-artist" name="artist" value="<?= h($filters['artist']) ?>">
             </div>
-
             <div class="form-group">
                 <label for="filter-year">リリース年</label>
-                <input
-                    type="text"
-                    id="filter-year"
-                    name="year"
-                    value="<?= h($filters['year']) ?>"
-                >
+                <input type="text" id="filter-year" name="year" value="<?= h($filters['year']) ?>">
             </div>
-
-<div class="form-group">
-    <label for="filter-genre">ジャンル</label>
-
-    <select id="filter-genre" name="genre">
-        <option value="">すべて</option>
-
-        <?php foreach ($genres as $genre): ?>
-            <option
-                value="<?= h($genre) ?>"
-                <?= $filters['genre'] === $genre ? 'selected' : '' ?>
-            >
-                <?= h($genre) ?>
-            </option>
-        <?php endforeach; ?>
-    </select>
-</div>
-
+            <div class="form-group">
+                <label for="filter-genre">ジャンル</label>
+                <select id="filter-genre" name="genre">
+                    <option value="">すべて</option>
+                    <?php foreach ($genres as $genre): ?>
+                        <option value="<?= h($genre) ?>" <?= $filters['genre'] === $genre ? 'selected' : '' ?>>
+                            <?= h($genre) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
             <div class="filter-buttons">
-                <button type="submit" class="button primary">
-                    絞り込む
-                </button>
-
-                <a href="../../PHP/Karaoke/karaoke.php" class="button secondary">
-                    クリア
-                </a>
+                <button type="submit" class="button primary">絞り込む</button>
+                <a href="../../PHP/Karaoke/karaoke.php" class="button secondary">クリア</a>
             </div>
         </form>
     </section>
 
     <div class="summary">
-        <span>
-            総曲数：
-            <strong><?= h((string)$totalSongs) ?></strong>
-            曲
-        </span>
-
-        <span>
-            <?= h((string)$page) ?> /
-            <?= h((string)$totalPages) ?> ページ
-        </span>
+        <span>総曲数：<strong><?= h((string)$totalSongs) ?></strong> 曲</span>
+        <span><?= h((string)$page) ?> / <?= h((string)$totalPages) ?> ページ</span>
     </div>
 
-<form method="post" id="save-form">
-    <input type="hidden" name="action" value="save">
-
-    <div class="table-wrapper">
-        <table>
-            <thead>
-                <tr>
-                    <th class="number-column">番号</th>
-
-                    <?php foreach ($headers as $key => $label): ?>
-                        <th>
-                            <a href="<?= h(sortUrl($key)) ?>">
-                                <?= h($label) ?><?= h(sortMark($key)) ?>
-                            </a>
-                        </th>
-                    <?php endforeach; ?>
-
-                    <th class="operation-column">操作</th>
-                </tr>
-            </thead>
-
-            <tbody>
-            <?php if (count($displaySongs) === 0): ?>
-                <tr>
-                    <td colspan="6" class="empty">
-                        該当する曲がありません。
-                    </td>
-                </tr>
-            <?php else: ?>
-                <?php foreach ($displaySongs as $index => $song): ?>
-                    <?php
-                    $songIndex = $offset + $index;
-                    ?>
-
+    <form method="post" id="save-form">
+        <input type="hidden" name="action" value="save">
+        <div class="table-wrapper">
+            <table>
+                <thead>
                     <tr>
-                        <td class="number-column">
-                            <?= h((string)($songIndex + 1)) ?>
-                        </td>
-
-                        <td>
-                            <input
-                                type="text"
-                                name="songs[<?= $songIndex ?>][title]"
-                                value="<?= h($song['title']) ?>"
-                                required
-                            >
-                        </td>
-
-                        <td>
-                            <input
-                                type="text"
-                                name="songs[<?= $songIndex ?>][artist]"
-                                value="<?= h($song['artist']) ?>"
-                                required
-                            >
-                        </td>
-
-                        <td>
-                            <input
-                                type="number"
-                                name="songs[<?= $songIndex ?>][year]"
-                                value="<?= h($song['year']) ?>"
-                                min="0"
-                                max="9999"
-                                required
-                            >
-                        </td>
-
-                        <td>
-                            <input
-                                type="text"
-                                name="songs[<?= $songIndex ?>][genre]"
-                                value="<?= h($song['genre']) ?>"
-                                required
-                            >
-                        </td>
-
-                        <td class="operation-cell">
-                            <button
-    type="button"
-    class="button delete"
-    data-index="<?= h((string)$songIndex) ?>"
-    data-title="<?= h($song['title']) ?>"
-    onclick="deleteSong(this)"
->
-    削除
-</button>
-
-                        </td>
+                        <th class="number-column">番号</th>
+                        <?php foreach ($headers as $key => $label): ?>
+                            <th><a href="<?= h(sortUrl($key)) ?>"><?= h($label) ?><?= h(sortMark($key)) ?></a></th>
+                        <?php endforeach; ?>
+                        <th class="operation-column">操作</th>
                     </tr>
-                <?php endforeach; ?>
-            <?php endif; ?>
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                <?php if (count($displaySongs) === 0): ?>
+                    <tr><td colspan="6" class="empty">該当する曲がありません。</td></tr>
+                <?php else: ?>
+                    <?php foreach ($displaySongs as $index => $song): ?>
+                        <?php $songIndex = $offset + $index; ?>
+                        <tr>
+                            <td class="number-column"><?= h((string)($songIndex + 1)) ?></td>
+                            <td><input type="text" name="songs[<?= $songIndex ?>][title]" value="<?= h($song['title']) ?>" required></td>
+                            <td><input type="text" name="songs[<?= $songIndex ?>][artist]" value="<?= h($song['artist']) ?>" required></td>
+                            <td><input type="number" name="songs[<?= $songIndex ?>][year]" value="<?= h($song['year']) ?>" min="0" max="9999" required></td>
+                            <td><input type="text" name="songs[<?= $songIndex ?>][genre]" value="<?= h($song['genre']) ?>" required></td>
+                            <td class="operation-cell">
+                                <button type="button" class="button delete" data-index="<?= h((string)$songIndex) ?>" data-title="<?= h($song['title']) ?>" onclick="deleteSong(this)">削除</button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+        <div class="save-area"><button type="submit" class="button save">CSVに保存</button></div>
+    </form>
 
-    <div class="save-area">
-        <button type="submit" class="button save">
-            CSVに保存
-        </button>
-    </div>
-</form>
+    <form method="post" id="delete-form">
+        <input type="hidden" name="action" value="delete">
+        <input type="hidden" name="delete_index" id="delete-index">
+    </form>
 
-<form method="post" id="delete-form">
-    <input type="hidden" name="action" value="delete">
-    <input type="hidden" name="delete_index" id="delete-index">
-</form>
-
-<script>
-function deleteSong(button) {
-    const index = button.dataset.index;
-    const title = button.dataset.title;
-
-    if (confirm('「' + title + '」を削除しますか？')) {
-        document.getElementById('delete-index').value = index;
-        document.getElementById('delete-form').submit();
+    <script>
+    function deleteSong(button) {
+        const index = button.dataset.index;
+        const title = button.dataset.title;
+        if (confirm('「' + title + '」を削除しますか？')) {
+            document.getElementById('delete-index').value = index;
+            document.getElementById('delete-form').submit();
+        }
     }
-}
-</script>
+    </script>
 
     <section class="pagination">
         <?php if ($page > 1): ?>
-            <a
-                class="button secondary"
-                href="<?= h(buildUrl(['page' => $page - 1])) ?>"
-            >
-                前のページ
-            </a>
+            <a class="button secondary" href="<?= h(buildUrl(['page' => $page - 1])) ?>">前のページ</a>
         <?php else: ?>
             <span class="button disabled">前のページ</span>
         <?php endif; ?>
@@ -302,130 +150,79 @@ function deleteSong(button) {
         <form method="get" class="page-jump">
             <?php foreach ($filters as $key => $value): ?>
                 <?php if ($value !== ''): ?>
-                    <input
-                        type="hidden"
-                        name="<?= h($key) ?>"
-                        value="<?= h($value) ?>"
-                    >
+                    <input type="hidden" name="<?= h($key) ?>" value="<?= h($value) ?>">
                 <?php endif; ?>
             <?php endforeach; ?>
-
             <?php if ($sort !== ''): ?>
                 <input type="hidden" name="sort" value="<?= h($sort) ?>">
                 <input type="hidden" name="order" value="<?= h($order) ?>">
             <?php endif; ?>
-
             <label for="page">ページ番号</label>
-
-            <input
-                type="number"
-                id="page"
-                name="page"
-                min="1"
-                max="<?= h((string)$totalPages) ?>"
-                value="<?= h((string)$page) ?>"
-                required
-            >
-
-            <button type="submit" class="button primary">
-                指定ページへ
-            </button>
+            <input type="number" id="page" name="page" min="1" max="<?= h((string)$totalPages) ?>" value="<?= h((string)$page) ?>" required>
+            <button type="submit" class="button primary">指定ページへ</button>
         </form>
 
         <?php if ($page < $totalPages): ?>
-            <a
-                class="button secondary"
-                href="<?= h(buildUrl(['page' => $page + 1])) ?>"
-            >
-                次のページ
-            </a>
+            <a class="button secondary" href="<?= h(buildUrl(['page' => $page + 1])) ?>">次のページ</a>
         <?php else: ?>
             <span class="button disabled">次のページ</span>
         <?php endif; ?>
     </section>
-
-    <p>
+<p>
     <section class="panel">
         <h2>曲を追加</h2>
-
         <form method="post" class="add-form">
             <input type="hidden" name="action" value="add">
-
+            <div class="form-group"><label for="title">曲名</label><input type="text" id="title" name="title" required></div>
+            <div class="form-group"><label for="artist">アーティスト名</label><input type="text" id="artist" name="artist" required></div>
+            <div class="form-group"><label for="year">リリース年</label><input type="number" id="year" name="year" min="0" max="9999" required></div>
             <div class="form-group">
-                <label for="title">曲名</label>
-                <input
-                    type="text"
-                    id="title"
-                    name="title"
-                    required
-                >
+                <label for="genre">ジャンル</label>
+                <select id="genre" name="genre" required>
+                    <option value="">選択してください</option>
+                    <?php foreach ($genres as $genre): ?>
+                        <option value="<?= h($genre) ?>"><?= h($genre) ?></option>
+                    <?php endforeach; ?>
+                </select>
             </div>
-
-            <div class="form-group">
-                <label for="artist">アーティスト名</label>
-                <input
-                    type="text"
-                    id="artist"
-                    name="artist"
-                    required
-                >
-            </div>
-
-            <div class="form-group">
-                <label for="year">リリース年</label>
-                <input
-                    type="number"
-                    id="year"
-                    name="year"
-                    min="0"
-                    max="9999"
-                    required
-                >
-            </div>
-
-<div class="form-group">
-    <label for="genre">ジャンル</label>
-
-    <select id="genre" name="genre" required>
-        <option value="">選択してください</option>
-
-        <?php foreach ($genres as $genre): ?>
-            <option value="<?= h($genre) ?>">
-                <?= h($genre) ?>
-            </option>
-        <?php endforeach; ?>
-    </select>
-</div>
-
-            <button type="submit" class="button primary">
-                一覧に追加
-            </button>
+            <button type="submit" class="button primary">一覧に追加</button>
         </form>
     </section>
-    </p>
+</p>
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
     const hamburger = document.getElementById('hamburger');
     const mobileMenu = document.getElementById('mobile-menu');
 
-    if (!hamburger || !mobileMenu) {
-        console.error('ハンバーガーメニューの要素が見つかりません');
-        return;
+    if (!hamburger || !mobileMenu) return;
+
+    function closeMenu() {
+        hamburger.classList.remove('is-open');
+        mobileMenu.classList.remove('is-open');
+        hamburger.setAttribute('aria-expanded', 'false');
+        hamburger.setAttribute('aria-label', 'メニューを開く');
     }
 
-    hamburger.addEventListener('click', function () {
-        const isOpen = mobileMenu.classList.toggle('is-open');
+    hamburger.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const isOpen = hamburger.classList.toggle('is-open');
+        mobileMenu.classList.toggle('is-open', isOpen);
+        hamburger.setAttribute('aria-expanded', String(isOpen));
+        hamburger.setAttribute('aria-label', isOpen ? 'メニューを閉じる' : 'メニューを開く');
+    });
 
-        hamburger.setAttribute(
-            'aria-expanded',
-            isOpen ? 'true' : 'false'
-        );
+    document.addEventListener('click', (event) => {
+        if (!mobileMenu.contains(event.target) && !hamburger.contains(event.target)) {
+            closeMenu();
+        }
+    });
+
+    mobileMenu.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', closeMenu);
     });
 });
 </script>
-
-
 </body>
 </html>

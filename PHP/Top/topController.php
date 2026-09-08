@@ -58,7 +58,7 @@ switch (getPathInfo(1)) {
 
     case 'kokai':
         validPathInfo(1);
-        $top->jsonUpdateKokaiSyoninFlg();
+        $top->DisplayDownloads();
         break;
 
     case '':

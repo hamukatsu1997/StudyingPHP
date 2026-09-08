@@ -68,6 +68,27 @@ public function displayBoard()
         exit;
 }
 
+public function displayDownLoads()
+{
+    if (!isset($_SESSION['userId'])) {
+        header('Location: ' . BASE_URI_USER . '/');
+        exit;
+    }
+
+    $this->userId = $_SESSION['userId'];
+    $this->userName = $_SESSION['userName'];
+
+    $file = __DIR__ . '/../../HTML/Downloads/downloads.html';
+
+        if (!file_exists($file)) {
+            http_response_code(500);
+            exit('素材ダウンロードが見つかりません: ' . $file);
+        }
+
+        include $file;
+        exit;
+}
+
 
     public function jsonUpdateKeisaiKibouFlg()
     {

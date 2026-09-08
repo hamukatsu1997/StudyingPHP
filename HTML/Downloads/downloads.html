@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>素材ライブラリ</title>
+    <link rel="stylesheet" href="../../CSS/Downloads/downloads.css">
+</head>
+<body>
+<header class="header">
+    <div class="logo"><a href="../../HTML/Top/top.html">StudyingPHP</a></div>
+    <nav class="desktop-nav" aria-label="メインメニュー">
+        <a href="../../HTML/Top/top.html">トップ</a>
+        <a href="../../PHP/Karaoke/karaoke.php">カラオケ</a>
+        <a class="active" href="../../PHP/Downloads/downloads.php">素材ライブラリ</a>
+    </nav>
+    <button class="hamburger" id="hamburger" type="button" aria-label="メニューを開く" aria-controls="mobile-menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <nav id="mobile-menu" class="mobile-menu" aria-label="モバイルメニュー">
+        <a href="../../HTML/Top/top.html">トップ</a>
+        <a href="../../PHP/Karaoke/karaoke.php">カラオケ</a>
+        <a class="active" href="../../PHP/Downloads/downloads.php">素材ライブラリ</a>
+    </nav>
+</header>
+
+<main class="container">
+    <section class="page-heading">
+        <div>
+            <span class="eyebrow">ASSET MANAGEMENT</span>
+            <h1>素材ライブラリ</h1>
+            <p>チームで使う画像・動画・資料をまとめて管理できます。</p>
+        </div>
+        <button class="button primary" type="button" id="open-upload">＋ 素材をアップロード</button>
+    </section>
+
+    <?php if (!empty($error)): ?>
+        <div class="message error-message"><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></div>
+    <?php endif; ?>
+
+    <section class="toolbar panel">
+        <label class="search-box"><span>⌕</span><input type="search" id="asset-search" placeholder="素材名やキーワードで検索"></label>
+        <div class="toolbar-actions">
+            <select id="type-filter" aria-label="種類で絞り込み"><option value="all">すべての種類</option><option value="image">画像</option><option value="video">動画</option><option value="document">資料</option></select>
+            <select aria-label="並び順"><option>更新日が新しい順</option><option>名前順</option><option>サイズ順</option></select>
+            <button class="icon-button" type="button" aria-label="表示を切り替え">▦</button>
+        </div>
+    </section>
+
+    <section class="summary-row"><div><strong id="asset-count">6</strong> 件の素材</div><div class="view-note">最終更新：2026年9月8日</div></section>
+
+    <section class="asset-grid" id="asset-grid">
+        <article class="asset-card" data-type="image" data-name="ブランドロゴ_最新版">
+            <div class="asset-preview preview-purple"><span class="file-mark">PNG</span><div class="preview-logo">T<span>iP</span></div></div>
+            <div class="asset-info"><h2>ブランドロゴ_最新版.png</h2><p>画像　<span>・</span>　2.4 MB</p><div class="asset-footer"><span>2026/09/08 10:24</span><button type="button" class="download-button">↓ ダウンロード</button></div></div>
+        </article>
+        <article class="asset-card" data-type="document" data-name="サービス紹介資料">
+            <div class="asset-preview preview-blue"><span class="file-mark">PDF</span><div class="doc-lines"><i></i><i></i><i></i></div></div>
+            <div class="asset-info"><h2>サービス紹介資料.pdf</h2><p>資料　<span>・</span>　8.1 MB</p><div class="asset-footer"><span>2026/09/07 16:42</span><button type="button" class="download-button">↓ ダウンロード</button></div></div>
+        </article>
+        <article class="asset-card" data-type="video" data-name="採用ムービー">
+            <div class="asset-preview preview-orange"><span class="file-mark">MP4</span><div class="play">▶</div></div>
+            <div class="asset-info"><h2>採用ムービー_30秒.mp4</h2><p>動画　<span>・</span>　42.8 MB</p><div class="asset-footer"><span>2026/09/05 09:18</span><button type="button" class="download-button">↓ ダウンロード</button></div></div>
+        </article>
+        <article class="asset-card" data-type="image" data-name="イベントバナー">
+            <div class="asset-preview preview-pink"><span class="file-mark">JPG</span><div class="banner-shape">EVENT<br><small>2026</small></div></div>
+            <div class="asset-info"><h2>イベントバナー.jpg</h2><p>画像　<span>・</span>　1.8 MB</p><div class="asset-footer"><span>2026/09/03 14:06</span><button type="button" class="download-button">↓ ダウンロード</button></div></div>
+        </article>
+        <article class="asset-card" data-type="document" data-name="運用マニュアル">
+            <div class="asset-preview preview-green"><span class="file-mark">DOCX</span><div class="book">▤</div></div>
+            <div class="asset-info"><h2>運用マニュアル.docx</h2><p>資料　<span>・</span>　3.2 MB</p><div class="asset-footer"><span>2026/08/29 11:30</span><button type="button" class="download-button">↓ ダウンロード</button></div></div>
+        </article>
+        <article class="asset-card" data-type="video" data-name="製品デモ">
+            <div class="asset-preview preview-navy"><span class="file-mark">MOV</span><div class="play">▶</div></div>
+            <div class="asset-info"><h2>製品デモ_操作説明.mov</h2><p>動画　<span>・</span>　86.5 MB</p><div class="asset-footer"><span>2026/08/25 18:12</span><button type="button" class="download-button">↓ ダウンロード</button></div></div>
+        </article>
+    </section>
+    <p class="empty-state" id="empty-state" hidden>条件に一致する素材がありません。</p>
+
+    <section class="upload-panel panel" id="upload-panel" hidden>
+        <div class="section-title"><div><span class="eyebrow">NEW ASSET</span><h2>素材をアップロード</h2></div><button type="button" class="close-button" id="close-upload" aria-label="閉じる">×</button></div>
+        <form method="post" enctype="multipart/form-data" action="../../PHP/Downloads/downloads.php">
+            <input type="hidden" name="action" value="upload">
+            <label class="drop-zone" for="asset-file"><span class="upload-icon">↑</span><strong>ファイルをここにドロップ</strong><span>またはクリックしてファイルを選択</span><small>最大 100MB　/　JPG・PNG・PDF・MP4・MOV など</small><input id="asset-file" type="file" name="asset" hidden></label>
+            <div class="upload-fields"><label>素材名<input type="text" name="asset_name" placeholder="例：営業資料_2026年版"></label><label>メモ（任意）<input type="text" name="memo" placeholder="素材についてのメモ"></label></div>
+            <div class="form-actions"><button type="button" class="button secondary" id="cancel-upload">キャンセル</button><button class="button primary" type="submit">アップロードする</button></div>
+        </form>
+    </section>
+</main>
+<script>
+const hamburger=document.getElementById('hamburger'), mobileMenu=document.getElementById('mobile-menu');
+hamburger?.addEventListener('click',()=>{const open=mobileMenu.classList.toggle('is-open');hamburger.setAttribute('aria-expanded',String(open));hamburger.setAttribute('aria-label',open?'メニューを閉じる':'メニューを開く');});
+const uploadPanel=document.getElementById('upload-panel');
+function toggleUpload(show){uploadPanel.hidden=!show;if(show)uploadPanel.scrollIntoView({behavior:'smooth',block:'center'});}
+document.getElementById('open-upload').onclick=()=>toggleUpload(true);document.getElementById('close-upload').onclick=()=>toggleUpload(false);document.getElementById('cancel-upload').onclick=()=>toggleUpload(false);
+const search=document.getElementById('asset-search'), filter=document.getElementById('type-filter'), cards=[...document.querySelectorAll('.asset-card')], empty=document.getElementById('empty-state');
+function update(){const q=search.value.toLowerCase();let n=0;cards.forEach(c=>{const ok=(filter.value==='all'||c.dataset.type===filter.value)&&c.dataset.name.toLowerCase().includes(q);c.hidden=!ok;if(ok)n++;});document.getElementById('asset-count').textContent=n;empty.hidden=n>0;} search.oninput=update;filter.onchange=update;
+document.getElementById('asset-file').onchange=e=>{if(e.target.files[0])e.target.closest('.drop-zone').querySelector('strong').textContent=e.target.files[0].name;};
+</script>
+</body>
