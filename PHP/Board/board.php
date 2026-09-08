@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 session_start();
+
 require_once __DIR__ . '/../../PHP/Top/topClass.php';
 
 if (!isset($_SESSION['userId'])) {
@@ -9,94 +10,116 @@ if (!isset($_SESSION['userId'])) {
     exit;
 }
 
-$csvFile = __DIR__ . '/../../CSV/board.csv';
 $messages = [];
 $error = '';
 
-/*
-|--------------------------------------------------------------------------
-| CSV読み込み
-|--------------------------------------------------------------------------
-*/
-if (is_file($csvFile) && ($handle = fopen($csvFile, 'rb')) !== false) {
-    while (($row = fgetcsv($handle)) !== false) {
-        if (count($row) >= 5) {
-            $messages[] = [
-                'posted_at' => $row[0],
-                'user_id'   => $row[1],
-                'user_name' => $row[2],
-                'ip'        => $row[3],
-                'body'      => $row[4],
-            ];
-        }
-    }
+$dbFile = __DIR__ . '/data/board.db';
 
-    fclose($handle);
+if (!is_dir(dirname($dbFile))) {
+    mkdir(dirname($dbFile), 0775, true);
 }
 
-/*
-|--------------------------------------------------------------------------
-| 新規投稿
-|--------------------------------------------------------------------------
-*/
+$pdo = new PDO('sqlite:' . $dbFile);
+
+$pdo->setAttribute(
+    PDO::ATTR_ERRMODE,
+    PDO::ERRMODE_EXCEPTION
+);
+
+$pdo->setAttribute(
+    PDO::ATTR_DEFAULT_FETCH_MODE,
+    PDO::FETCH_ASSOC
+);
+
+$pdo->exec(
+    'CREATE TABLE IF NOT EXISTS posts (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        posted_at TEXT NOT NULL,
+        user_id TEXT NOT NULL,
+        user_name TEXT NOT NULL DEFAULT "",
+        ip_address TEXT NOT NULL,
+        body TEXT NOT NULL
+    )'
+);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $body = trim((string)($_POST['body'] ?? ''));
+    $action = $_POST['action'] ?? '';
 
-    if ($body === '') {
-        $error = '投稿内容を入力してください。';
-    } elseif (mb_strlen($body) > 1000) {
-        $error = '投稿内容は1000文字以内で入力してください。';
-    } else {
-        $postedAt = (new DateTimeImmutable(
-            'now',
-            new DateTimeZone('Asia/Tokyo')
-        ))->format('Y-m-d H:i:s');
+    if ($action === 'delete') {
+        $postId = filter_input(
+            INPUT_POST,
+            'post_id',
+            FILTER_VALIDATE_INT
+        );
 
-        $userId = (string)$_SESSION['userId'];
-        $userName = (string)($_SESSION['userName'] ?? '');
-        $ipAddress = (string)($_SERVER['REMOTE_ADDR'] ?? 'unknown');
-
-        $handle = fopen($csvFile, 'ab');
-
-        if ($handle === false) {
-            $error = '投稿を保存できませんでした。';
+        if ($postId === false || $postId === null) {
+            $error = '削除対象が見つかりません。';
         } else {
-            if (flock($handle, LOCK_EX)) {
-                fputcsv(
-                    $handle,
-                    [
-                        $postedAt,
-                        $userId,
-                        $userName,
-                        $ipAddress,
-                        $body
-                    ]
-                );
+            $stmt = $pdo->prepare(
+                'DELETE FROM posts
+                 WHERE id = :id
+                   AND user_id = :user_id'
+            );
 
-                fflush($handle);
-                flock($handle, LOCK_UN);
-                fclose($handle);
+            $stmt->execute([
+                ':id' => $postId,
+                ':user_id' => (string)$_SESSION['userId'],
+            ]);
 
+            if ($stmt->rowCount() === 0) {
+                $error = '削除できる投稿が見つかりません。';
+            } else {
                 header('Location: board.php');
                 exit;
             }
+        }
+    }
 
-            fclose($handle);
-            $error = '投稿を保存できませんでした。';
+    if ($action === 'add') {
+        $body = trim((string)($_POST['body'] ?? ''));
+
+        if ($body === '') {
+            $error = '投稿内容を入力してください。';
+        } elseif (mb_strlen($body) > 1000) {
+            $error = '投稿内容は1000文字以内で入力してください。';
+        } else {
+            $postedAt = (new DateTimeImmutable(
+                'now',
+                new DateTimeZone('Asia/Tokyo')
+            ))->format('Y-m-d H:i:s');
+
+            $stmt = $pdo->prepare(
+                'INSERT INTO posts
+                    (posted_at, user_id, user_name, ip_address, body)
+                 VALUES
+                    (:posted_at, :user_id, :user_name, :ip_address, :body)'
+            );
+
+            $stmt->execute([
+                ':posted_at' => $postedAt,
+                ':user_id' => (string)$_SESSION['userId'],
+                ':user_name' => (string)($_SESSION['userName'] ?? ''),
+                ':ip_address' => (string)($_SERVER['REMOTE_ADDR'] ?? 'unknown'),
+                ':body' => $body,
+            ]);
+
+            header('Location: board.php');
+            exit;
         }
     }
 }
 
-/*
-|--------------------------------------------------------------------------
-| 新しい投稿を上に表示
-|--------------------------------------------------------------------------
-*/
-$messages = array_reverse($messages);
+$stmt = $pdo->query(
+    'SELECT
+        id,
+        posted_at,
+        user_id,
+        user_name,
+        ip_address,
+        body
+     FROM posts
+     ORDER BY posted_at DESC, id DESC'
+);
 
-/*
-|--------------------------------------------------------------------------
-| 最後にHTMLを読み込む
-|--------------------------------------------------------------------------
-*/
+$messages = $stmt->fetchAll();
+
 include __DIR__ . '/../../HTML/Board/board.html';
