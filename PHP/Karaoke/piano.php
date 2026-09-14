@@ -14,8 +14,8 @@ $siteTitle = 'Simple Piano';
       --bg: #111827;
       --panel: #1f2937;
       --accent: #60a5fa;
-      --white-key-width: min(10vw, 76px);
-      --white-key-height: min(48vw, 340px);
+      --white-key-width: 48px;
+      --white-key-height: min(58vw, 340px);
     }
     * { box-sizing: border-box; }
     body {
@@ -28,11 +28,12 @@ $siteTitle = 'Simple Piano';
       background: radial-gradient(circle at top, #26344d, var(--bg) 60%);
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
-    .app { width: min(100%, 780px); text-align: center; }
+    .app { width: min(100%, 1200px); text-align: center; }
     h1 { margin: 0 0 8px; font-size: clamp(1.5rem, 4vw, 2.25rem); }
     .hint { margin: 0 0 22px; color: #cbd5e1; font-size: .95rem; }
     .piano-wrap {
       overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
       padding: 18px 10px 24px;
       border-radius: 18px;
       background: rgba(17, 24, 39, .78);
@@ -65,8 +66,8 @@ $siteTitle = 'Simple Piano';
     .black {
       position: absolute;
       top: 0;
-      left: calc(var(--white-key-width) - min(2vw, 15px));
-      width: min(4vw, 30px);
+      left: calc(var(--white-key-width) - 15px);
+      width: 30px;
       height: 60%;
       z-index: 2;
       border: 1px solid #020617;
@@ -89,7 +90,7 @@ $siteTitle = 'Simple Piano';
     .status { margin-top: 16px; color: #93c5fd; min-height: 1.4em; }
     .controls { margin-top: 16px; color: #cbd5e1; font-size: .85rem; }
     @media (max-width: 560px) {
-      :root { --white-key-width: 13vw; --white-key-height: 58vw; }
+      :root { --white-key-width: 42px; --white-key-height: 58vw; }
       .hint { font-size: .85rem; }
     }
   </style>
@@ -97,30 +98,38 @@ $siteTitle = 'Simple Piano';
 <body>
   <main class="app">
     <h1>🎹 Simple Piano</h1>
-    <p class="hint">鍵盤をクリック・タップ、または A〜K キーで演奏できます</p>
+    <p class="hint">鍵盤をクリック・タップ、またはパソコンのキーで演奏できます</p>
     <section class="piano-wrap" aria-label="ピアノ鍵盤">
       <div class="piano" id="piano"></div>
     </section>
     <div class="status" id="status">鍵盤を押してください</div>
-    <div class="controls">対応音域：C4〜C5　／　音声はブラウザ内で生成されます</div>
+    <div class="controls">対応音域：88鍵（A0〜C8）　／　横にスクロールできます</div>
   </main>
 
   <script>
-    const notes = [
-      { name: 'C4',  freq: 261.63, type: 'white', key: 'a' },
-      { name: 'C#4', freq: 277.18, type: 'black', key: 'w' },
-      { name: 'D4',  freq: 293.66, type: 'white', key: 's' },
-      { name: 'D#4', freq: 311.13, type: 'black', key: 'e' },
-      { name: 'E4',  freq: 329.63, type: 'white', key: 'd' },
-      { name: 'F4',  freq: 349.23, type: 'white', key: 'f' },
-      { name: 'F#4', freq: 369.99, type: 'black', key: 't' },
-      { name: 'G4',  freq: 392.00, type: 'white', key: 'g' },
-      { name: 'G#4', freq: 415.30, type: 'black', key: 'y' },
-      { name: 'A4',  freq: 440.00, type: 'white', key: 'h' },
-      { name: 'A#4', freq: 466.16, type: 'black', key: 'u' },
-      { name: 'B4',  freq: 493.88, type: 'white', key: 'j' },
-      { name: 'C5',  freq: 523.25, type: 'white', key: 'k' }
+    // 標準的な88鍵ピアノ：A0〜C8（MIDI 21〜108）
+    const whiteNames = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+    const blackSemitones = new Set([1, 3, 6, 8, 10]);
+    const keyboardMap = [
+      'z', 's', 'x', 'd', 'c', 'v', 'g', 'b', 'h', 'n', 'j', 'm',
+      'q', '2', 'w', '3', 'e', 'r', '5', 't', '6', 'y', '7', 'u', 'i'
     ];
+
+    function midiToNote(midi, index) {
+      const semitone = midi % 12;
+      const octave = Math.floor(midi / 12) - 1;
+      const names = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+      const isBlack = blackSemitones.has(semitone);
+      const frequency = 440 * Math.pow(2, (midi - 69) / 12);
+      return {
+        name: `${names[semitone]}${octave}`,
+        freq: frequency,
+        type: isBlack ? 'black' : 'white',
+        key: keyboardMap[index] || null
+      };
+    }
+
+    const notes = Array.from({ length: 88 }, (_, index) => midiToNote(index + 21, index));
 
     const piano = document.getElementById('piano');
     const status = document.getElementById('status');
@@ -141,7 +150,7 @@ $siteTitle = 'Simple Piano';
         el.type = 'button';
         el.dataset.index = index;
         el.dataset.key = note.key;
-        el.setAttribute('aria-label', `${note.name}（${note.key.toUpperCase()}）`);
+        el.setAttribute('aria-label', note.key ? `${note.name}（${note.key.toUpperCase()}）` : note.name);
         if (note.type === 'white') {
           const label = document.createElement('span');
           label.className = 'label';
@@ -193,7 +202,7 @@ $siteTitle = 'Simple Piano';
       status.textContent = '鍵盤を押してください';
     }
 
-    const keyToIndex = new Map(notes.map((note, index) => [note.key, index]));
+    const keyToIndex = new Map(notes.filter(note => note.key).map((note, index) => [note.key, notes.indexOf(note)]));
     window.addEventListener('keydown', event => {
       if (event.repeat) return;
       const index = keyToIndex.get(event.key.toLowerCase());
