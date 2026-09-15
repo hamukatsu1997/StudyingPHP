@@ -66,6 +66,12 @@ switch (getPathInfo(1)) {
         $top->displayTop();
         break;
 
+        case 'secret':
+            validPathInfo(1);
+            $top->displaySecret();
+            break;
+
+
     default:
         displayNotFound();
 }
